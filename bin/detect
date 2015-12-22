@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Replace repository urls"
+exit 0
