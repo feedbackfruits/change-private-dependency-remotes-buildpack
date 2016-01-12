@@ -9,8 +9,9 @@ before other buildpacks which require the urls to be replaced, like installing p
 Upload the original and replacement urls to heroku.
 
 ``` sh-session
-$ heroku config:set ORIGINAL_REPO_URL="git:\/\/github.com"
-$ heroku config:set REPLACEMENT_REPO_URL="https:\/\/github.com"
+$ YOUR_OAUTH_KEY="INSERTYOUROAUTHKEYHERE"
+$ heroku config:set ORIGINAL_REPO_URL="git@github.com:"
+$ heroku config:set REPLACEMENT_REPO_URL="https:\/\/$YOUR_OAUTH_KEY:x-oauth-basic@github.com\/"
 ```
 
 Use the Heroku Toolbelt to
