@@ -3,28 +3,31 @@
 build_dir=$1
 env_dir=$3
 
-if [ "$DEPENDENCY_FILES" == "" ]; then
-  depfiles="$env_dir/requirements.txt"
+
+if [ -f "$env_dir/DEPENDENCY_FILES" ]; then
+  depfiles="$(cat $env_dir/DEPENDENCY_FILES)"
 else
-  depfiles="$env_dir/$DEPENDENCY_FILES"
+  depfiles="requirements.txt"
 fi
 
-if [ "$ORIGINAL_REPO_URL" == "" ]; then
-  echo "-----> No original url specified, choose default ssh:\/\/git@github.com:"
-  original_url="ssh:\/\/git@github.com:"
+if [ -f "$env_dir/ORIGINAL_REPO_URL" ]; then
+  original_url="$(cat $env_dir/ORIGINAL_REPO_URL)"
 else
-  original_url=$ORIGINAL_REPO_URL
+  original_url="ssh:\/\/git@github.com\/"
+  echo "-----> No original url specified, choose default $original_url"
 fi
 
-if [ "$REPLACEMENT_REPO_URL" == "" ]; then
-  if [ "$GITHUB_OAUTH_KEY" == "" ]; then
+if [ -f "$env_dir/REPLACEMENT_REPO_URL" ]; then
+  replacement_url="$(cat $env_dir/$REPLACEMENT_REPO_URL)"
+else
+  if [ -f "$env_dir/GITHUB_OAUTH_KEY" ]; then
+    key="$(cat $env_dir/GITHUB_OAUTH_KEY)"
+    replacement_url="https:\/\/$key:x-oauth-basic@github.com\/"
+    echo "-----> No replacement url specified, choose default $replacement_url"
+  else
     echo "-----> No replacement url nor github oauth key specified"
     exit 1
   fi
-  echo "-----> No replacement url specified, choose default https:\/\/$GITHUB_OAUTH_KEY:x-oauth-basic@github.com\/"
-  replacement_url="https:\/\/$GITHUB_OAUTH_KEY:x-oauth-basic@github.com\/"
-else
-  replacement_url=$REPLACEMENT_REPO_URL
 fi
 
 # Looping over all depfiles
@@ -32,4 +35,3 @@ echo "-----> Renaming $original_url to $replacement_url in $depfiles"
 cd $build_dir
 sed -i.bak "s/$original_url/$replacement_url/g" $depfiles
 exit 0
-

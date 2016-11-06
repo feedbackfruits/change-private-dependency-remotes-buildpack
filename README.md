@@ -10,7 +10,7 @@ Can be used for any dependency manager, but defaults to `pip` standards.
 Environment variabes with defaults:
 ```
 DEPENDENCY_FILES="requirements.txt"
-ORIGINAL_REPO_URL="ssh:\/\/git@github.com:"
+ORIGINAL_REPO_URL="ssh:\/\/git@github.com\/"
 REPLACEMENT_REPO_URL="https:\/\/$GITHUB_OAUTH_KEY:x-oauth-basic@github.com\/" # Requires GITHUB_OAUTH_KEY to be specified
 ```
 Note, the last two must be escaped for use in `sed`
